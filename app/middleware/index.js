@@ -7,7 +7,6 @@ var jwt = require('jwt-simple');
 var domain = require('domain');
 
 var config = require('../lib/config');
-var utils = require('../lib/utils');
 
 exports.csrf = require('./csrf');
 
