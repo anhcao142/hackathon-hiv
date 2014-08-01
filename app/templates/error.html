@@ -1,0 +1,24 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<div class="container">
+  <section class="info">
+    <h1 class="info-heading">{{ message }}</h1>
+    {{ renderError(error) }}
+  </section>
+</div>
+{% endblock %}
+
+{% macro renderError(err) %}
+  {% set errCode = err.code | default(500) %}
+
+  {% if errCode == 404 %}
+    <p>Trang bạn đang tìm hiện nay không thể tìm thấy!</p>
+  {% else %}
+    <p>Đã có vấn đề xảy ra :(</p>
+  {% endif %}
+DEBUG {{ debug }}
+  {% if debug %}
+    <pre class="stacktrace">{{ err.stack }}</pre>
+  {% endif %}
+{% endmacro %}

@@ -1,0 +1,16 @@
+{% extends "layout.html" %}
+
+{% block css -%}
+    {{ super() }}
+    <link rel="stylesheet" href="{{ static('/css/announce.css') }}">
+{%- endblock %}
+
+{% block content %}
+<div class="container">
+  <section class="announce">
+    <h1 class="text-center page-header">TOXBadge Info</h1>
+    <br>
+    <p class="text-center text-info message">{{message}}</h1>
+  </section>
+</div>
+{% endblock %}

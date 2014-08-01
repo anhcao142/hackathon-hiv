@@ -1,0 +1,73 @@
+@import "base";
+
+html{
+    margin: 0;
+    padding: 0;
+    height: 100%;
+
+    body{
+        height: 100%;
+    }
+}
+
+.jumpotron {
+    text-align: center;
+    font-family: $font-primary;
+    display: block;
+    background: url(../images/login-background.jpg);
+    background-size: cover;
+    color: $white;
+    text-shadow: 1px 2px 5px rgba(0,0,0,0.5);
+    padding-top: 75px;
+    
+    @media (max-width: 1000px) {
+        padding-top: 125px;
+    }
+
+    .container {
+        position: relative;
+        z-index: 2;
+    }
+
+    a {
+        font-weight: 300;
+        color: $white;
+    }
+}
+
+.mashead-links {
+    list-style: none outside none;
+    margin: 0;
+    padding-left: 0;
+
+    li {
+        color: $white-quarter;
+    }
+}
+
+.home-sub-link {
+    font-size: $big;
+    padding-bottom: 40px;
+    padding-top: 60px;
+}
+
+
+#have-claim-code {
+    margin-top: 60px;
+}
+
+.claim-code-input {
+    @extend .font-default;
+    font-weight: 300;
+    width: 280px;
+    display: block;
+    text-align: center;
+    margin: auto;
+    margin-bottom: 10px;
+    font-size: $bigger;
+    color: $dark-gray;
+}
+
+#claim-code-wrapper {
+    z-index: 2;
+}

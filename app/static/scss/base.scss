@@ -1,0 +1,171 @@
+/* ===[ Fonts ]============================================================== */
+$font-primary: "Roboto", "Helvetica", Tahoma, Arial;
+
+/*** FONT-SIZE ***/
+$small: 14px;
+$normal: 16px;
+$big: 20px;
+$bigger: 24px;
+$huge: 36px;
+
+/** Index **/
+$maxIndex: 999;
+
+/** FONT **/
+.font-default {
+    font-family: $font-primary;
+    font-size: $normal;
+    font-weight: 400;
+}
+
+
+/*** STANDARD COLORS ***/
+$black: #333;
+$white: #fff;
+$white-quarter: rgba(255, 255, 255, 0.25);
+$white-half: rgba(255, 255, 255, 0.5);
+$red: #FF0000;
+$medium-red: #e74c3c;
+
+/*** BRAND COLORS  ***/
+$tiffany-blue: #00c1cb;
+$hover-blue: #0592d8;
+$medium-green: #4bb96b;
+$light-green: #5BC1A5;
+$dark-green: #349776;
+$light-beige: #f8f9f5;
+$dark-beige: #cbcbc6;
+$brown: #5d5b57;
+$gray: #aeb0b1;
+$dark-gray: #4D4E53;
+$light-gray: #e6e6e6;
+$hover-gray: #282828;
+$gray5: #f9f9fa;
+$gray10: #f3f4f5;
+$gray30: #dbdee3;
+$gray50: #c3c8d0;
+$gray80: #BCBBBA;
+$dark30: #888888;
+$dark50: #424242;
+$dark80: #363636;
+
+$orange: #DD4814;
+$orange-dark: #AE3910;
+
+$pumpkin: #d35400;
+
+/*===================[ CEDAR Website Color Branch ]===================*/
+$white: #ffffff;
+$light-gray: #e9eaed;
+
+$dark-blue: #01579b;
+$medium-blue: #039be5;
+$light-blue: #b3e5fc;
+
+$dark-green: #0d5302;
+$medium-green: #0a8f08;
+
+$dark-deeporange: #bf360c;
+$medium-deeporange: #f4511e;
+
+$gray90: #f8f8f8;
+
+/*===================[ Branch Config Colors ]===================*/
+$primary-color: $medium-blue;
+$secondary-color: $dark-blue;
+$primary-gray: $dark30;
+$secondary-gray: $gray50;
+$error-color: $medium-red;
+
+
+/*===================[ Component Size ]===================*/
+$menu-height: 50px;
+
+/*===================[ Component Colors ]===================*/
+$beta-background: $medium-blue;
+$beta-hover: $dark-blue;
+$background-primary: $white;
+$background-info: $medium-red;
+
+$background-dark-primary: $dark50;
+
+$background-secondary: $light-gray;
+
+
+$badge-bacground-hover: $gray5;
+$badge-image-hover: rgba($primary-color, 0.1);
+
+$header-background: rgba($gray90, 1);
+$header-background-secondary: rgba($white, 1);
+
+$footer-background: $gray10;
+
+$primary-border: $secondary-gray;
+$navbar-background-color: $orange;
+$navbar-active-item-background-color: $orange-dark;
+$navbar-link-default-color: $black;
+$navbar-link-active-color: $white;
+
+$facebook-background: #3b5998;
+$google-background: #da4735;
+$wordpress-background: #21759b;
+
+/* ===[ Spacing ]============================================================== */
+
+$space-normal: 50px;
+
+.right {
+    float: right;
+}
+
+.btn {
+    border-radius: 3px;
+    padding: 8px 20px;
+}
+
+.btn-primary {
+    background: $dark-blue;
+    border: $medium-blue;
+    color: $white;
+}
+
+.btn-info {
+    background: $medium-blue;
+    border: $light-blue;
+    color: $white;
+}
+
+.label-info {
+    background: $medium-blue;
+}
+
+.mashead h1 {
+    font-size: 64px;
+    font-weight: 200;
+    line-height: 1.25;
+    padding-bottom: 20px;
+    padding-top: 20px;
+}
+
+.mashead p {
+    font-size: $bigger;
+    font-weight: 300;
+    line-height: 1.25;
+}
+
+a {
+    color: $medium-blue;
+    text-decoration: none;
+
+    &:hover, &:focus {
+        color: $medium-blue;
+        text-decoration: none;
+    }
+}
+
+.cedar-border {
+    border-color: #D8D8D8;
+    border-radius: 3px;
+    border-style: solid;
+    border-width: 1px 1px 2px;
+}

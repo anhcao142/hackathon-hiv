@@ -1,0 +1,13 @@
+*.sublime-project
+*.sublime-workspace
+local_env
+local
+database.json
+config.env
+config.json
+.DS_Store
+.env
+Procfile.local
+.project
+.settings/
+node_modules/

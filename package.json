@@ -1,0 +1,48 @@
+{
+  "name": "cedar-website",
+  "description": "ToxBadge Consumer Website",
+  "version": "0.1.0",
+  "main": "app/index.js",
+  "author": "ToxBadge http://toxbadge.com",
+  "readmeFilename": "README.md",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/tcst/cedar-website.git"
+  },
+  "scripts": {
+    "test": "./node_modules/.bin/mocha -R spec test/*.test.js"
+  },
+  "dependencies": {
+    "async": "~0.2.9",
+    "badgekit-api-client": "git://github.com/mozilla/badgekit-api-client",
+    "client-sessions": "~0.4.0",
+    "config-store": "~0.2.0",
+    "crypto": "0.0.3",
+    "db-migrate": "^0.6.4",
+    "email-templates": "^0.1.8",
+    "express": "~3.4.0",
+    "express-monkey-patch": "~0.1.1",
+    "fb": "^0.7.0",
+    "i18n": "^0.4.1",
+    "jws": "^0.2.5",
+    "jwt-simple": "~0.2.0",
+    "mailchimp": "^1.1.0",
+    "mysql": "~2.0.0-rc1",
+    "newrelic": "~1.4.0",
+    "node-sass": "~0.7.0",
+    "node-uuid": "^1.4.1",
+    "nodemailer": "^0.6.5",
+    "nunjucks": "~1.0.0",
+    "optimist": "~0.6.0",
+    "parse": "^1.2.17",
+    "step": "0.0.5",
+    "streamsql": "^0.8.1",
+    "validator": "~3.5.1",
+    "xtend": "~2.1.1",
+    "node-trello": "~0.1.5"
+  },
+  "devDependencies": {
+    "mocha": "~1.15.1",
+    "should": "~2.1.1"
+  }
+}

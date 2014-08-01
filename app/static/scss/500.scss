@@ -1,0 +1,30 @@
+@import "base";
+
+.title {
+	font-size: 110px; //special case, doest not meet any font-size standards
+	font-weight: 300;
+	
+	span {
+		vertical-align: middle;
+		display: inline-block;
+		color: $primary-color;
+	}
+
+	img {
+		height: 100px;
+		display: inline-block;
+		vertical-align: middle;
+		padding-left: 5px;
+		padding-right: 5px;
+	}
+}
+
+.content {
+	text-align: justify;
+	padding: 20px;
+	font-size: $big;
+	line-height: 2em;
+	font-weight: 300;
+	max-width: 960px;
+	margin: auto;
+}

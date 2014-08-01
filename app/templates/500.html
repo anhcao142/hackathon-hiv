@@ -1,0 +1,46 @@
+    {% extends "layout.html" %}
+
+{% block css -%}
+    {{ super() }}
+    <link rel="stylesheet" href="{{ static('/css/500.css?v_01') }}">
+{%- endblock %}
+
+{% block title %}
+    TOXBadge - Not Found
+{% endblock %}
+
+
+{% block body %}
+    <div class="cw-container">
+        <center>
+            <img src="{{ static('images/500.png') }}"/>
+
+            <h1>Suỵt !!!</h1>
+            <h2>
+                Bạn vừa truy ra tung tích của <b>Badge tuyệt mật</b>!
+            </h2>
+        </center>
+
+        <div class="content">
+            TOXBadge là một thế giới huyền bí, sâu thẳm bên trong là các mật thất, mê cung mà con người không thường lui tới.
+            Ở những cấm địa ấy, luôn luôn đầy ắp những mụ phù thủy hắc ám, những con quái vật hung hãn và những bẫy treo đáng sợ.
+            Vì vậy, chúng tôi khuyên bạn không nên đi tiếp, mà hãy cùng chúng tôi luyện kĩ năng chiến đấu đặc biệt bằng những 
+            bí kíp sau đây:
+
+            <ul class="resource">
+                <li><a href="http://toxbadge.com/kham-pha-toxbadge/badge-la-gi/">Badge là gì</a></li>
+                <li><a href="http://toxbadge.com/kham-pha-toxbadge/cong-dong-badge/">Hệ sinh thái của TOXBadge</a></li>
+            </ul>
+        </div>
+
+
+
+        
+    </div>
+{% endblock %}
+
+{% block js %}
+    {{ super() }}
+    <script src="https://backpack.openbadges.org/issuer.js"></script>
+    <script src="{{ static('/js/home.js?v_02') }}"></script>
+{% endblock %}

@@ -1,0 +1,47 @@
+    {% extends "layout.html" %}
+
+{% block css -%}
+    {{ super() }}
+    <link rel="stylesheet" href="{{ static('/css/home.css?v_03') }}">
+{%- endblock %}
+
+{% block Title %}
+    Trang Chủ TOXBadge
+{% endblock %}
+
+{% block homenav %}
+    <li class="active">
+        <a href="{{ url('home') }}" class="home-nav active"><i class="fa fa-home"></i> Trang chủ</a>
+    </li>
+{% endblock %}
+
+{% block body %}
+    <div class="jumpotron mashead">
+        <div class="container">
+            <h1>TOXBadge</h1>
+            <p>Capture Learning Any Time, Any Where</p>
+            <p id="have-claim-code">Have a claim code?</p>
+            {% if (error) %}
+            <div class="label label-danger">Code không có hiệu lực hoặc không hợp lệ.</div>
+            {% endif %}
+            <p id="claim-code-wrapper">
+                <form action="{{ url('code.confirm', [ code ]) }}" method="GET">
+                    <input class="claim-code-input" name="code" type="text" placeholder="Enter Claim Code">
+                    <button type="submit" id="claim-code-submit" class="btn btn-info btn-lg btn-home-claim">NHẬN BADGE</button>
+                </form>
+            </p>
+            <ul class="mashead-links home-sub-link list-inline">
+                <li><a href="/explorer">TOX Ngay!!!</a></li>
+                <li>|</li>
+                <li><a href="/blog">Theo dõi Blog của chúng tôi</a></li>
+                <li>|</li>
+                <li><a href="http://toxbadge.com/tox-team/lien-he/">Liên Hệ</a></li>
+            </ul>
+        </div>
+    </div>
+{% endblock %}
+{% block js %}
+    {{ super() }}
+    <script src="https://backpack.openbadges.org/issuer.js"></script>
+    <script src="{{ static('/js/home.js?v_02') }}"></script>
+{% endblock %}
