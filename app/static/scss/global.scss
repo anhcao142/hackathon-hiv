@@ -39,14 +39,14 @@ body {
 .cedar-theme {
     h1 {
         font-size: $huge;
-        font-weight: 300;
+        font-weight: 100 !important;
         margin: 0;
         margin-bottom: 10px;
     }
 
     h2 {
         font-size: $bigger;
-        font-weight: 300;
+        font-family: "Segoe UI";
         margin: 0;
         margin-bottom: 5px;
     }

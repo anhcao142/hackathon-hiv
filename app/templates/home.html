@@ -1,19 +1,18 @@
-    {% extends "layout.html" %}
+	{% extends "layout.html" %}
 
 {% block css -%}
-    {{ super() }}
-    <link rel="stylesheet" href="{{ static('/css/home.css?v_03') }}">
+	{{ super() }}
+	<link rel="stylesheet" href="{{ static('/css/home.css?v_03') }}">
 {%- endblock %}
 
 {% block Title %}
-    Trang Chủ TOXBadge
+	Trang Chủ TOXBadge
 {% endblock %}
 
 {% block body %}
     <div class="jumbotron">
         <div class="container">
-            <form id="predict-infection-csv" class="form-horizontal" action="/predict" enctype="multipart/form-data" method="POST" role="form">
-                <input type="hidden" name="_csrf" value="{{csrfToken}}">
+            <form id="predict-infection-csv" class="form-horizontal" action="/uploadcsv" enctype="multipart/form-data" method="POST" role="form">
                 <div class="form-group">
                     <label for="csv_upload" class="col-sm-2 control-label">CSV file</label>
                     <div class="col-sm-10">
@@ -38,55 +37,75 @@
             </table>
         </div>
     </div>
-    <div class="container">
-        <form id="predict-infection" class="form-horizontal" action="/predict" method="POST" role="form">
-            <input type="hidden" name="_csrf" value="{{csrfToken}}">
+	<div class="cw-container">
+        <h1>HIV Progression Predition</h1>
+        <h2>BETA HCMUS</h2>
+        <br>
+		<form id="predict-infection" class="form-horizontal" action="/predict" method="POST" role="form">
+			<input type="hidden" name="_csrf" value="{{csrfToken}}">
+			<div class="form-group">
+				<div for="pr_seq" class="col-sm-2"><h2><strong>Protease</strong> nucleotide</h2></div>
+				<div class="col-sm-10">
+					<textarea  name="pr_seq" class="nu-text hide form-control" id="pr_seq" placeholder="Pr seq"></textarea>
+                    <div class="nucle"></div>
+				</div>
+			</div>
+			<div class="form-group">
+				<div for="rt_seq" class="col-sm-2"><h2><strong>Reverse Transcriptase</strong> nucleotide</h2></div>
+				<div class="col-sm-10">
+					<textarea  name="rt_seq" class="nu-text hide form-control" id="rt_seq" placeholder="Rt seq"></textarea>
+                    <div class="nucle"></div>
+				</div>
+			</div>
+			<div class="form-group">
+				<div for="rt_seq" class="col-sm-2"><h2><strong>Viral load</strong><br> at t<sub>0</sub></div>
+				<div class="col-sm-10">
+					<textarea name="viral_load" class="form-control" id="viral_load" placeholder="Viral load"></textarea>
+				</div>
+			</div>
             <div class="form-group">
-                <label for="pr_seq" class="col-sm-2 control-label">Pr seq</label>
+                <div for="rt_seq" class="col-sm-2"><h2><strong>CD4 count</strong><br> at t<sub>0</sub></div>
                 <div class="col-sm-10">
-                    <textarea class="form-control" rows="4" name="pr_seq" id="pr_seq" placeholder="Pr seq"></textarea>
+                    <textarea name="cd4_count" class="form-control" id="cd4_count" placeholder="CD4 count"></textarea>
                 </div>
             </div>
-            <div class="form-group">
-                <label for="rt_seq" class="col-sm-2 control-label">Rt seq</label>
-                <div class="col-sm-10">
-                    <textarea class="form-control" rows="4" name="rt_seq" id="rt_seq" placeholder="Rt seq"></textarea>
-                </div>
-            </div>
-            <div class="form-group">
-                <div class="col-sm-offset-2 col-sm-10">
-                    <button type="submit" class="js-predict btn btn-primary">Will this person infect other people?</button>
-                    <img class="hide loading" src="{{static('/images/loading.GIF')}}" alt="loading..." />
-                    <h2 class="js-no label hide label-success">No</h2>
-                    <h2 class="js-yes label hide label-danger">Yes</h2>
-                    <h2 class="js-undetermined label hide label-warning">Undetermined</h2>
-                </div>
-            </div>
-        </form>
-    </div>
-    <div class="container">
-        <h2 class="text-muted">Test data</h2>
-        <table class="table table-hover">
-          <thead>
-            <tr>
-              <th>#</th>
-              <th>pr_seq</th>
-              <th>rt_seq</th>
-            </tr>
-          </thead>
-          <tbody>
-            {% for patient in patients %}
-                <tr class="js-test-patient" onclick="populateData(this)">
-                  <td>{{loop.index}}</td>
-                  <td class="pr_seq">{{patient.pr_seq}}</td>
-                  <td class="rt_seq">{{patient.rt_seq}}</td>
-                </tr>
-            {% endfor %}
-          </tbody>
-        </table>
-    </div>
+			<div class="form-group">
+				<div class="col-sm-offset-2 col-sm-10">
+					<button type="submit" class="js-predict btn btn-primary"><h2>Compute Prediction</h2></button>
+					<img class="hide loading" src="{{static('/images/loading.GIF')}}" alt="loading..." />
+					<h2 class="js-no label hide label-success">No</h2>
+					<h2 class="js-yes label hide label-danger">Yes</h2>
+					<h2 class="js-undetermined label hide label-warning">Undetermined</h2>
+				</div>
+			</div>
+		</form>
+	</div>
+	<div class="container">
+		<h2 class="text-muted">Test data</h2>
+		<table class="table table-hover">
+		  <thead>
+			<tr>
+			  <th>#</th>
+			  <th>pr_seq</th>
+			  <th>rt_seq</th>
+			</tr>
+		  </thead>
+		  <tbody>
+			{% for patient in patients %}
+				<tr class="js-test-patient" onclick="populateData(this)">
+				  <td>{{loop.index}}</td>
+				  <td class="pr_seq">{{patient.pr_seq}}</td>
+				  <td class="rt_seq">{{patient.rt_seq}}</td>
+                  <td class="vl_t0">{{patient.vl_t0}}</td>
+                  <td class="cd4_t0">{{patient.cd4_t0}}</td>
+				</tr>
+			{% endfor %}
+		  </tbody>
+		</table>
+	</div>
 {% endblock %}
 {% block js %}
-    {{ super() }}
-    <script src="{{ static('/js/home.js') }}"></script>
+	{{ super() }}
+	<script src="{{ static('/js/home.js') }}"></script>
+    <script src="{{ static('/js/jquery.autosize.js') }}"></script>
 {% endblock %}

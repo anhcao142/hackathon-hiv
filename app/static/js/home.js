@@ -2,33 +2,60 @@ var testPatient = $('.js-test-patient');
 
 testPatient.css('cursor', 'pointer');
 
+$(function () {
+    $('textarea').autosize({append:''});
+
+    $('.nucle').click(function() {
+        var nucle = $(this);
+        $(this).addClass('hide');
+        $(this).prev().removeClass('hide').trigger('autosize.resize');;
+    });
+
+    $('.nu-text').focusout(function () {
+        console.log('abc');
+        $(this).next().removeClass('hide');
+        $(this).addClass('hide');
+    });
+});
+
 function populateData(ele) {
     console.log(ele);
     var pr_seq = $(ele).find('.pr_seq').html();
     var rt_seq = $(ele).find('.rt_seq').html();
+    var vl_t0 = $(ele).find('.vl_t0').html();
+    var cd4_t0 = $(ele).find('.cd4_t0').html();
 
-    $('textarea[name="pr_seq"]').val(pr_seq);
-    $('textarea[name="rt_seq"]').val(rt_seq);
+    $('textarea[name="pr_seq"]').val(pr_seq).trigger('autosize.resize');
+    pr_seq = pr_seq.replace(/C/gi, 'PP');
+    pr_seq = pr_seq.replace(/PP/gi, '<xxxx xxxxx="nu-c">C</xxxx>');
+    pr_seq = pr_seq.replace(/A/gi, 'PP');
+    pr_seq = pr_seq.replace(/PP/gi, '<xxxx xxxxx="nu-a">A</xxxx>');
+    pr_seq = pr_seq.replace(/T/gi, 'PP');
+    pr_seq = pr_seq.replace(/PP/gi, '<xxxx xxxxx="nu-t">T</xxxx>');
+    
+    pr_seq = pr_seq.replace(/G/gi, 'PP');
+    pr_seq = pr_seq.replace(/PP/gi, '<xxxx xxxxx="nu-g">G</xxxx>');
+    pr_seq = pr_seq.replace(/xxxxx/gi, 'class');
+    pr_seq = pr_seq.replace(/xxxx/gi, 'span');
+
+    $('textarea[name="pr_seq"]').next().html(pr_seq);
+    $('textarea[name="rt_seq"]').val(rt_seq).trigger('autosize.resize');
+    rt_seq = rt_seq.replace(/C/gi, 'PP');
+    rt_seq = rt_seq.replace(/PP/gi, '<xxxx xxxxx="nu-c">C</xxxx>');
+    rt_seq = rt_seq.replace(/A/gi, 'PP');
+    rt_seq = rt_seq.replace(/PP/gi, '<xxxx xxxxx="nu-a">A</xxxx>');
+    rt_seq = rt_seq.replace(/T/gi, 'PP');
+    rt_seq = rt_seq.replace(/PP/gi, '<xxxx xxxxx="nu-t">T</xxxx>');
+    
+    rt_seq = rt_seq.replace(/G/gi, 'PP');
+    rt_seq = rt_seq.replace(/PP/gi, '<xxxx xxxxx="nu-g">G</xxxx>');
+    rt_seq = rt_seq.replace(/xxxxx/gi, 'class');
+    rt_seq = rt_seq.replace(/xxxx/gi, 'span');
+    
+    $('textarea[name="rt_seq"]').next().html(rt_seq);
+
+    //  $('textarea').autosize.resize();
 }
-
-var file;
-
-$('input[name="csv_file"]').on('change', function(e) {
-    file = e.target.files[0];
-})
-
-$('#predict-infection-csv').submit(function (e) {
-    e.preventDefault();
-    var $form = $(this);
-    var body = new FormData();
-    body.append('csv_file', file);
-
-    var url = $form.attr('action');
-
-    $.post(url, body, function(data) {
-        console.log(data);
-    })
-})
 
 $('#predict-infection').submit(function (e) {
     e.preventDefault();
@@ -54,6 +81,8 @@ $('#predict-infection').submit(function (e) {
         rt_seq: $form.find('textarea[name="rt_seq"]').val()
     }
 
+
+
     var url = $form.attr('action');
 
     $.post(url, body, function(data) {
@@ -63,12 +92,16 @@ $('#predict-infection').submit(function (e) {
             return;
         };
 
+
+
         if (data.resp) {
             setTimeout('setYes()', 3000);
         } else {
             setTimeout('setNo()', 3000);
         }
-    })
+    });
+
+
 })
 
 function setYes() {

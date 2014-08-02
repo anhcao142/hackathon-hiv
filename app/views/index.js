@@ -3,11 +3,11 @@ const fs = require('fs');
 const async = require('async')
 
 exports.home = function home(req, res, next) {
-
     var context = {
         limit: 5,
         page: 1
     }
+
     Patient.get(context, function (err, patients) {
         res.render('home.html', {patients: patients});
     });
@@ -46,17 +46,16 @@ exports.insertData = function insertData(req, res, next) {
     })
 }
 
-exports.predict = function predict(req, res, next) {
+exports.uploadCsv = function uploadCsv(req, res, next) {
     var uploadCsv;
-    debugger;
     if (req.files) {
         uploadCsv = req.files.csv_file;
     };
+    var resultPatients = [];
 
     if (uploadCsv) {
         fs.readFile(uploadCsv.path, 'utf8', function (err, data) {
             var patients = readCsv(data);
-            var resultPatients = [];
             async.each(patients, function (patient, innerCallback) {
                 var context = {
                     pr_seq: patient.pr_seq,
@@ -64,44 +63,48 @@ exports.predict = function predict(req, res, next) {
                 }
 
                 Patient.getOne(context, function (err, patient) {
+                    if (err) {
+                        return innerCallback(err);
+                    };
+
                     resultPatients = resultPatients.concat(patient);
+                    return innerCallback();
                 });
             }, function (err) {
                 if (err) {
                     return next(err);
                 };
+                debugger;
 
-                if (req.xhr) {
-                    return res.send(200, resultPatients);
-                };
-
-                return res.send(200, resultPatients);
+                return res.render('home.html', {patients: resultPatients});
             });
         });
     };
+}
 
+exports.predict = function predict(req, res, next) {
     var context;
     if (req.body.pr_seq && req.body.rt_seq) {
         context = {
             pr_seq: req.body.pr_seq.trim(),
             rt_seq: req.body.rt_seq.trim()
         }
-    }
 
-    Patient.getOne(context, function (err, patient) {
-        if (err) {
-            if (req.xhr) {
-                return res.send(err);
+        Patient.getOne(context, function (err, patient) {
+            if (err) {
+                if (req.xhr) {
+                    return res.send(err);
+                };
+                return next(err);
             };
-            return next(err);
-        };
 
-        if (req.xhr) {
-            return res.send(200, patient);
-        };
+            if (req.xhr) {
+                return res.send(200, patient);
+            };
 
-        res.send(patient);
-    });
+            res.send(patient);
+        });
+    }
 }
 
 function readCsv(data) {

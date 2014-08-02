@@ -73,6 +73,7 @@ var secureRouteHandlers = [middleware.cedarUserAware(LOGIN_PAGE_REDIRECT_TO)];
 var secureApiHandlers = [middleware.verifyApiRequest()];
 
 app.get('/', 'home', views.home);
+app.post('/uploadcsv', views.uploadCsv);
 app.post('/predict', views.predict);
 app.get('/insertdata', views.insertData);
 
