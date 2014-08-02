@@ -10,6 +10,54 @@ html{
     }
 }
 
+textarea {
+    resize: none;
+    height: 2em;
+    width: 100%;
+    font-size: $bigger !important;
+    font-family: "Consolas";
+
+    &:focus {
+        background: $white;
+    }
+}
+
+.nucle {
+    font-size: $bigger;
+    line-height: 1.3em;
+    max-width: 100%;
+    word-wrap: break-word;
+    padding: 13px;
+    letter-spacing: 0px;
+}
+
+.nu-a {
+    background: #f9bdbb;
+    padding-left: 4px;
+    padding-right: 4px;
+}
+
+.nu-c {
+    background: #e8eaf6;
+    padding-left: 4px;
+    padding-right: 4px;
+}
+
+.nu-t {
+    background: #b3e5fc;
+    padding-left: 4px;
+    padding-right: 4px;
+}
+
+.nu-g {
+    background: #a3e9a4;
+    padding-left: 4px;
+    padding-right: 4px;
+}
+
+
+
+
 .jumpotron {
     text-align: center;
     font-family: $font-primary;
