@@ -8,8 +8,6 @@ var domain = require('domain');
 
 var config = require('../lib/config');
 
-exports.csrf = require('./csrf');
-
 var COOKIE_KEY = config('COOKIE_KEY', 'session');
 var COOKIE_SECRET = config('COOKIE_SECRET');
 
@@ -22,11 +20,6 @@ exports.session = function session() {
             httpOnly: true
         }
     });
-};
-
-exports.addCsrfToken = function addCsrfToken(req, res, next) {
-    res.locals.csrfToken = req.session._csrf;
-    next();
 };
 
 exports.debug = function debug(req, res, next) {

@@ -4,40 +4,42 @@
 	{{ super() }}
 	<link rel="stylesheet" href="{{ static('/css/home.css?v_03') }}">
 	<script type="text/javascript" src="https://www.google.com/jsapi"></script>
-    <script type="text/javascript">
+	<script type="text/javascript">
 
-      // Load the Visualization API and the piechart package.
-        google.load('visualization', '1.0', {'packages':['corechart']});
+	  // Load the Visualization API and the piechart package.
+		google.load('visualization', '1.0', {'packages':['corechart']});
 
-        // Set a callback to run when the Google Visualization API is loaded.
-        google.setOnLoadCallback(drawChart);
+		// Set a callback to run when the Google Visualization API is loaded.
+		google.setOnLoadCallback(drawChart);
 
-        google.setOnLoadCallback(drawChart);
-function drawChart() {
-  var data = google.visualization.arrayToDataTable([
-    ['Generation', 'Descendants'],
-    [0, 1], [1, 33], [2, 269], [3, 2013]
- ]);
+		var drawData = [];
 
-  var options = {
-    
-    height: 400,
-    //width: 400,
-    title: 'Descendants by Generation',
-    hAxis: {title: 'Generation', minValue: 0, maxValue: 3},
-    vAxis: {title: 'Descendants', minValue: 0, maxValue: 2100},
-    trendlines: {
-      0: {
-        type: 'exponential',
-        visibleInLegend: true,
-      }
-    }
-  };
+		function drawChart() {
+            console.log('listen');
+			var data = google.visualization.arrayToDataTable(drawData);
 
-  var chart = new google.visualization.ScatterChart(document.getElementById('chart_div'));
-  chart.draw(data, options);
-}
-    </script>
+			var options = {
+				
+				height: 500,
+				width: 800,
+				title: 'Descendants by Generation',
+				hAxis: {title: 'Generation', minValue: 0, maxValue: 3},
+				vAxis: {title: 'Descendants', minValue: 0, maxValue: 3},
+				trendlines: {
+					0: {
+						type: 'exponential',
+						visibleInLegend: true,
+                        color: 'purple',
+                        lineWidth: 10,
+                        opacity: 0.2
+					}
+				}
+			};
+
+			var chart = new google.visualization.ScatterChart(document.getElementById('chart_div'));
+			chart.draw(data, options);
+		}
+	</script>
 {%- endblock %}
 
 {% block Title %}
@@ -47,6 +49,49 @@ function drawChart() {
 	<div class="cw-container">
 		<h1>HIV Progression Predition</h1>
 		<h2>BETA HCMUS</h2>
+		<br>
+		<br>
+		<form id="predict-infection-csv" class="form-horizontal" action="/uploadcsv" enctype="multipart/form-data" method="POST" role="form">
+			<div class="form-group">
+				<div for="csv_upload" class="col-sm-2"><h2>CSV file<h2></div>
+				<div class="col-sm-10">
+					<input type="file" class="form-control" name="csv_file" id="csv_upload" placeholder="upload csv file" />
+				</div>
+			</div>
+
+			<div class="form-group">
+				<div class="col-sm-offset-2 col-sm-10">
+					<button type="submit" class="js-upload-csv btn btn-default"><h2>Import data<h2></button>
+					<!-- <img class="hide loading" src="{{static('/images/loading.GIF')}}" alt="loading..." /> -->
+				</div>
+			</div>
+		</form>
+	</div>
+	<div class="cw-container">
+		<div class="title-data">
+			<strong>
+				<div div class="col-md-1">ID</div>
+				<div class="col-md-3 pr_seq">Protease</div>
+				<div class="col-md-4 rt_seq">Reverse Transcriptase</div>
+				<div class="col-md-2 rt_seq">Viral load</div>
+				<div class="col-md-2 rt_seq">CD4 count</div>
+			</strong>
+		</div>
+		
+		{% for patient in patients %}
+			<div class="import-data js-test-patient" onclick="populateData(this)">
+				<div div class="col-md-1">#{{loop.index}}</div>
+				<div class="col-md-3 pr_seq">{{patient.pr_seq}}</div>
+				<div class="col-md-4 rt_seq">{{patient.rt_seq}}</div>
+				<div class="col-md-2 vl_t0">{{patient.vl_t0}}</div>
+				<div class="col-md-2 cd4_t0">{{patient.cd4_t0}}</div>
+				<div class="clear"></div>
+			</div>
+		{% endfor %}
+		<div class="clear"></div>
+	</div>
+	<div class="cw-container">
+		
 		<br>
 		<form id="predict-infection" class="form-horizontal" action="/predict" method="POST" role="form">
 			<input type="hidden" name="_csrf" value="{{csrfToken}}">
@@ -67,66 +112,48 @@ function drawChart() {
 			<div class="form-group">
 				<div for="rt_seq" class="col-sm-2"><h2><strong>Viral load</strong><br> at t<sub>0</sub></h2></div>
 				<div class="col-sm-10">
-					<textarea name="viral_load" class="form-control" id="viral_load" placeholder="Viral load"></textarea>
+					<textarea name="vl_t0" class="form-control" id="viral_load" placeholder="Viral load"></textarea>
 				</div>
 			</div>
 			<div class="form-group">
 				<div for="rt_seq" class="col-sm-2"><h2><strong>CD4 count</strong><br> at t<sub>0</sub></h2></div>
 				<div class="col-sm-10">
-					<textarea name="cd4_count" class="form-control" id="cd4_count" placeholder="CD4 count"></textarea>
+					<textarea name="cd4_t0" class="form-control" id="cd4_count" placeholder="CD4 count"></textarea>
 				</div>
 			</div>
-            
+			
 			<div class="form-group">
 				<div class="col-sm-offset-2 col-sm-10">
 					<button type="submit" class="js-predict btn btn-primary"><h2>Compute Prediction</h2></button>
-					<img class="hide loading" src="{{static('/images/loading.GIF')}}" alt="loading..." />
-					<h2 class="js-no label hide label-success">No</h2>
-					<h2 class="js-yes label hide label-danger">Yes</h2>
-					<h2 class="js-undetermined label hide label-warning">Undetermined</h2>
 				</div>
 			</div>
+			<br>
+			<br>
+			<div class="result-hiv hide">
+				<div class="form-group">
+					<div for="rt_seq" class="col-sm-2"><h2>Response status</h2></div>
+					<div class="col-sm-10" id="res-stt">undefined</div>
+				</div>
 
-            <div class="form-group">
-                <div for="rt_seq" class="col-sm-2"><h2>Responde status</h2></div>
-                <div class="col-sm-10"><h2>YES</h2></div>
-            </div>
-
-            <div class="form-group">
-                <div for="rt_seq" class="col-sm-2"><h2>Viral load in next year</h2></div>
-                <div class="col-sm-10">
-                    <div id="chart_div"></div>
-                </div>
-                <div class="clear"></div>
-            </div>
-		</form>
-        <div class="clear"></div>
-	</div>
-	<div class="cw-container">
-		<h2>Import data</h2>
-		<div class="title-data">
-			<strong>
-				<div div class="col-md-1">ID</div>
-				<div class="col-md-3 pr_seq">Protease</div>
-				<div class="col-md-4 rt_seq">Reverse Transcriptase</div>
-				<div class="col-md-2 rt_seq">Viral load</div>
-				<div class="col-md-2 rt_seq">CD4 count</div>
-			</strong>
-		</div>
-        
-		{% for patient in patients %}
-
-			<div class="import-data js-test-patient safe-data" onclick="populateData(this)">
-				<div div class="col-md-1">#{{loop.index}}</div>
-				<div class="col-md-3 pr_seq">{{patient.pr_seq}}</div>
-				<div class="col-md-4 rt_seq">{{patient.rt_seq}}</div>
-				<div class="col-md-2 viral_load">{{patient.vl_t0}}</div>
-				<div class="col-md-2 cd4_count">{{patient.cd4_t0}}</div>
-				<div class="clear"></div>
+				<div class="form-group">
+					<div class="nextviral col-sm-2"><h2><strong>Viral load</strong><br> next year</h2></div>
+					<div class="col-sm-10">
+						<div id="chart_div"></div>
+					</div>
+					<div class="clear"></div>
+				</div>
 			</div>
-		{% endfor %}
+		</form>
 		<div class="clear"></div>
 	</div>
+
+    <div class="cw-container logo" style="background:none">
+        <img src="{{ static('/images/APCS.png')}}">
+        <img src="{{ static('/images/bigdata.png')}}">
+        <img src="{{ static('/images/who.jpg')}}">
+        <img src="{{ static('/images/kaggle.png')}}">
+    </div>
+	
 {% endblock %}
 {% block js %}
 	{{ super() }}

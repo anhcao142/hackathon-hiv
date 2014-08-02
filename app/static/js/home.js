@@ -45,9 +45,14 @@ function drawChart() {
 }
 
 function populateData(ele) {
-    console.log(ele);
+    $('.active').removeClass('active');
+    $(ele).addClass('active');
+    $('.result-hiv').addClass('hide');
+
     var pr_seq = $(ele).find('.pr_seq').html();
     var rt_seq = $(ele).find('.rt_seq').html();
+    var vl_t0 = $(ele).find('.vl_t0').html();
+    var cd4_t0 = $(ele).find('.cd4_t0').html();
 
     $('textarea[name="pr_seq"]').val(pr_seq).trigger('autosize.resize');
     pr_seq = pr_seq.replace(/C/gi, 'PP');
@@ -78,10 +83,40 @@ function populateData(ele) {
     
     $('textarea[name="rt_seq"]').next().html(rt_seq);
 
+    $('textarea[name="vl_t0"]').val(vl_t0);
+    $('textarea[name="cd4_t0"]').val(cd4_t0);
+
     //  $('textarea').autosize.resize();
 }
 
+function drawChart() {
+    var data = google.visualization.arrayToDataTable(drawData);
+
+    var options = {
+        
+        height: 500,
+        width: 800,
+        title: 'Viral load by months',
+        hAxis: {title: 'Viral load', minValue: 0, maxValue: 1},
+        vAxis: {title: 'Months', minValue: 0, maxValue: 1},
+        trendlines: {
+            0: {
+                type: 'exponential',
+                visibleInLegend: true,
+                color: 'purple',
+                lineWidth: 10,
+                opacity: 0.2
+            }
+        }
+    };
+
+    var chart = new google.visualization.ScatterChart(document.getElementById('chart_div'));
+
+    chart.draw(data, options);
+}
+
 $('#predict-infection').submit(function (e) {
+    $('.result-hiv').removeClass('hide');
     e.preventDefault();
     $('.loading').removeClass('hide');
 
@@ -105,23 +140,52 @@ $('#predict-infection').submit(function (e) {
         rt_seq: $form.find('textarea[name="rt_seq"]').val()
     }
 
-
-
     var url = $form.attr('action');
 
     $.post(url, body, function(data) {
-        console.log(data);
-        if (!data) {
-            setTimeout('setUndetermined()', 3000);
-            return;
-        };
-
-
-
-        if (data.resp) {
-            setTimeout('setYes()', 3000);
+        if (data && data.resp) {
+            $('#res-stt').html('YES');
+            //$('#res-stt').addclass('YES');
+        } else if (!data) {
+            $('#res-stt').html('wrong data');
         } else {
-            setTimeout('setNo()', 3000);
+            $('#res-stt').html('NO');
+        }
+        console.log(data.vl_t0);
+        if (data) {
+            if (data.resp) {
+                drawData = [['Month', 'Viral load'], 
+                    [0, data.vl_t0],
+                    [1, data.vl_t0*0.68],
+                    [2, data.vl_t0*Math.pow(0.68,2)],
+                    [3, data.vl_t0*Math.pow(0.68,3)],
+                    [4, data.vl_t0*Math.pow(0.68,4)],
+                    [5, data.vl_t0*Math.pow(0.68,5)],
+                    [6, data.vl_t0*Math.pow(0.68, 6)],
+                    [7, data.vl_t0*Math.pow(0.68, 7)],
+                    [8, data.vl_t0*Math.pow(0.68, 8)],
+                    [9, data.vl_t0*Math.pow(0.68, 9)],
+                    [10, data.vl_t0*Math.pow(0.68, 10)],
+                    [11, data.vl_t0*Math.pow(0.68, 11)],
+                    [12, data.vl_t0/100]];
+                drawChart();
+            } else {
+                drawData = [['Month', 'Viral load'], 
+                    [0, data.vl_t0],
+                    [1, data.vl_t0/0.68],
+                    [2, data.vl_t0/Math.pow(0.68,2)],
+                    [3, data.vl_t0/Math.pow(0.68,3)],
+                    [4, data.vl_t0/Math.pow(0.68,4)],
+                    [5, data.vl_t0/Math.pow(0.68,5)],
+                    [6, data.vl_t0/Math.pow(0.68, 6)],
+                    [7, data.vl_t0/Math.pow(0.68, 7)],
+                    [8, data.vl_t0/Math.pow(0.68, 8)],
+                    [9, data.vl_t0/Math.pow(0.68, 9)],
+                    [10, data.vl_t0/Math.pow(0.68, 10)],
+                    [11, data.vl_t0/Math.pow(0.68, 11)],
+                    [12, data.vl_t0*90]];
+                drawChart();
+            }
         }
     });
 

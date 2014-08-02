@@ -3,11 +3,11 @@ const fs = require('fs');
 const async = require('async')
 
 exports.home = function home(req, res, next) {
-
     var context = {
         limit: 5,
         page: 1
     }
+
     Patient.get(context, function (err, patients) {
         res.render('home.html', {patients: patients});
     });
@@ -46,24 +46,79 @@ exports.insertData = function insertData(req, res, next) {
     })
 }
 
+exports.uploadCsv = function uploadCsv(req, res, next) {
+    var uploadCsv;
+    if (req.files) {
+        uploadCsv = req.files.csv_file;
+    };
+    var resultPatients = [];
+
+    if (uploadCsv) {
+        fs.readFile(uploadCsv.path, 'utf8', function (err, data) {
+            var patients = readCsv(data);
+            async.each(patients, function (patient, innerCallback) {
+                var context = {
+                    pr_seq: patient.pr_seq,
+                    rt_seq: patient.rt_seq
+                }
+
+                Patient.getOne(context, function (err, patient) {
+                    if (err) {
+                        return innerCallback(err);
+                    };
+
+                    resultPatients = resultPatients.concat(patient);
+                    return innerCallback();
+                });
+            }, function (err) {
+                if (err) {
+                    return next(err);
+                };
+                debugger;
+
+                return res.render('home.html', {patients: resultPatients});
+            });
+        });
+    };
+}
+
 exports.predict = function predict(req, res, next) {
-    var context = {
-        pr_seq: req.body.pr_seq.trim(),
-        rt_seq: req.body.rt_seq.trim()
-    }
+    var context;
+    if (req.body.pr_seq && req.body.rt_seq) {
+        context = {
+            pr_seq: req.body.pr_seq.trim(),
+            rt_seq: req.body.rt_seq.trim()
+        }
 
-    Patient.getOne(context, function (err, patient) {
-        if (err) {
-            if (req.xhr) {
-                return res.send(err);
+        Patient.getOne(context, function (err, patient) {
+            if (err) {
+                if (req.xhr) {
+                    return res.send(err);
+                };
+                return next(err);
             };
-            return next(err);
-        };
 
-        if (req.xhr) {
-            return res.send(200, patient);
-        };
+            if (req.xhr) {
+                return res.send(200, patient);
+            };
 
-        res.send(patient);
-    });
+            res.send(patient);
+        });
+    }
+}
+
+function readCsv(data) {
+    data = data.trim();
+    var listData = data.split('\n');
+    var listPatient = [listData.length - 1];
+    for (var i = 1; i < listData.length; i++) {
+        var ls = listData[i].split(',');
+        listPatient[i-1] = {
+            resp: Number(ls[1]),
+            pr_seq: String(ls[2]).replace(/"/gi, ''),
+            rt_seq: String(ls[3]).replace(/"/gi, ''),
+        }
+    };
+
+    return listPatient;
 }
