@@ -10,6 +10,34 @@
 {% endblock %}
 
 {% block body %}
+    <div class="jumbotron">
+        <div class="container">
+            <form id="predict-infection-csv" class="form-horizontal" action="/predict" enctype="multipart/form-data" method="POST" role="form">
+                <input type="hidden" name="_csrf" value="{{csrfToken}}">
+                <div class="form-group">
+                    <label for="csv_upload" class="col-sm-2 control-label">CSV file</label>
+                    <div class="col-sm-10">
+                        <input type="file" class="form-control" name="csv_file" id="csv_upload" placeholder="upload csv file" />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-sm-offset-2 col-sm-10">
+                        <button type="submit" class="js-upload-csv btn btn-primary">Predict</button>
+                        <img class="hide loading" src="{{static('/images/loading.GIF')}}" alt="loading..." />
+                    </div>
+                </div>
+            </form>
+            <table class="table table-hover hide">
+              <thead>
+                <tr>
+                  <th>#</th>
+                  <th>pr_seq</th>
+                  <th>rt_seq</th>
+                </tr>
+              </thead>
+            </table>
+        </div>
+    </div>
     <div class="container">
         <form id="predict-infection" class="form-horizontal" action="/predict" method="POST" role="form">
             <input type="hidden" name="_csrf" value="{{csrfToken}}">

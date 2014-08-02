@@ -51,25 +51,12 @@ app.use(function (req, res, next) {
     next();
 });
 
-var CSRF_OPTIONS = {
-    whitelist: [
-        '/login-facebook',
-        '/persona/login',
-        '/persona/logout',
-        '/persona/verify',
-        '/api/user',
-        '/hook'
-    ]
-};
-
 app.use(express.compress());
 app.use(express.bodyParser());
 app.use(express.cookieParser());
 app.use(middleware.session());
 app.use(middleware.domainWrapper());
-app.use(middleware.csrf(CSRF_OPTIONS));
 app.use(middleware.sass(staticDir, staticRoot));
-app.use(middleware.addCsrfToken);
 app.use(middleware.debug);
 app.use(middleware.initLocalData);
 app.use(staticRoot, express.static(staticDir));

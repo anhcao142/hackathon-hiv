@@ -11,6 +11,25 @@ function populateData(ele) {
     $('textarea[name="rt_seq"]').val(rt_seq);
 }
 
+var file;
+
+$('input[name="csv_file"]').on('change', function(e) {
+    file = e.target.files[0];
+})
+
+$('#predict-infection-csv').submit(function (e) {
+    e.preventDefault();
+    var $form = $(this);
+    var body = new FormData();
+    body.append('csv_file', file);
+
+    var url = $form.attr('action');
+
+    $.post(url, body, function(data) {
+        console.log(data);
+    })
+})
+
 $('#predict-infection').submit(function (e) {
     e.preventDefault();
     $('.loading').removeClass('hide');
