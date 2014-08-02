@@ -1,6 +1,5 @@
 *.sublime-project
 *.sublime-workspace
-local_env
 local
 database.json
 config.env

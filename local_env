@@ -1,0 +1,11 @@
+export COOKIE_KEY=session
+export COOKIE_SECRET=agoodsecret
+export PORT=7743
+export DATABASE_DRIVER=
+export DATABASE_HOST=
+export DATABASE_USER=
+export DATABASE_PASSWORD=
+export DATABASE_DATABASE=
+export CEDAR_AUDIENCE=http://localhost:7743
+export DEBUG=false
+export NODE_ENV=test
