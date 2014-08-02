@@ -22,6 +22,60 @@ textarea {
     }
 }
 
+.pr_seq, .rt_seq {
+    //width: 50%;
+    word-wrap: break-word;
+    overflow: hidden;
+}
+
+.import-data {
+    font-family: "Consolas";
+    padding-top: 5px;
+    border: 1px solid $white;
+    max-height: 6em;
+    overflow: hidden;
+    margin-left: -10px;
+    font-size: $big;
+    &:hover {
+        background: #ccc;
+        color: $black;
+    }
+    text-align: center;
+
+    div {
+        
+    }
+}
+
+.label-stt {
+    font-size: $big;
+    display: inline-block;
+    text-align: left;
+}
+
+.alert-data {
+    background: #e51c23;
+    color: $white;
+}
+
+.safe-data {
+    background: #b2dfdb;
+    //color: $white;
+}
+
+.chart-div {
+    height: 500px;
+}
+
+.title-data {
+    text-align: center;
+    font-size: $big;
+    padding-top: 5px;
+    overflow: hidden;
+    margin-top: 5px;
+    margin-left: -10px;
+}
+
 .nucle {
     font-size: $bigger;
     line-height: 1.3em;
@@ -29,28 +83,30 @@ textarea {
     word-wrap: break-word;
     padding: 13px;
     letter-spacing: 0px;
+    background: #111;
+    color: $white;
 }
 
 .nu-a {
-    background: #f9bdbb;
+    color: #f69988;
     padding-left: 4px;
     padding-right: 4px;
 }
 
 .nu-c {
-    background: #e8eaf6;
+    color: #bcaaa4;
     padding-left: 4px;
     padding-right: 4px;
 }
 
 .nu-t {
-    background: #b3e5fc;
+    color: #4fc3f7;
     padding-left: 4px;
     padding-right: 4px;
 }
 
 .nu-g {
-    background: #a3e9a4;
+    color: #a3e9a4;
     padding-left: 4px;
     padding-right: 4px;
 }

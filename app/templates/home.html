@@ -3,45 +3,80 @@
 {% block css -%}
 	{{ super() }}
 	<link rel="stylesheet" href="{{ static('/css/home.css?v_03') }}">
+	<script type="text/javascript" src="https://www.google.com/jsapi"></script>
+    <script type="text/javascript">
+
+      // Load the Visualization API and the piechart package.
+        google.load('visualization', '1.0', {'packages':['corechart']});
+
+        // Set a callback to run when the Google Visualization API is loaded.
+        google.setOnLoadCallback(drawChart);
+
+        google.setOnLoadCallback(drawChart);
+function drawChart() {
+  var data = google.visualization.arrayToDataTable([
+    ['Generation', 'Descendants'],
+    [0, 1], [1, 33], [2, 269], [3, 2013]
+ ]);
+
+  var options = {
+    
+    height: 400,
+    //width: 400,
+    title: 'Descendants by Generation',
+    hAxis: {title: 'Generation', minValue: 0, maxValue: 3},
+    vAxis: {title: 'Descendants', minValue: 0, maxValue: 2100},
+    trendlines: {
+      0: {
+        type: 'exponential',
+        visibleInLegend: true,
+      }
+    }
+  };
+
+  var chart = new google.visualization.ScatterChart(document.getElementById('chart_div'));
+  chart.draw(data, options);
+}
+    </script>
 {%- endblock %}
 
 {% block Title %}
-	Trang Chủ TOXBadge
 {% endblock %}
 
 {% block body %}
 	<div class="cw-container">
-        <h1>HIV Progression Predition</h1>
-        <h2>BETA HCMUS</h2>
-        <br>
+		<h1>HIV Progression Predition</h1>
+		<h2>BETA HCMUS</h2>
+		<br>
 		<form id="predict-infection" class="form-horizontal" action="/predict" method="POST" role="form">
 			<input type="hidden" name="_csrf" value="{{csrfToken}}">
 			<div class="form-group">
 				<div for="pr_seq" class="col-sm-2"><h2><strong>Protease</strong> nucleotide</h2></div>
 				<div class="col-sm-10">
 					<textarea  name="pr_seq" class="nu-text hide form-control" id="pr_seq" placeholder="Pr seq"></textarea>
-                    <div class="nucle"></div>
+					<div class="nucle"></div>
 				</div>
 			</div>
 			<div class="form-group">
 				<div for="rt_seq" class="col-sm-2"><h2><strong>Reverse Transcriptase</strong> nucleotide</h2></div>
 				<div class="col-sm-10">
 					<textarea  name="rt_seq" class="nu-text hide form-control" id="rt_seq" placeholder="Rt seq"></textarea>
-                    <div class="nucle"></div>
+					<div class="nucle"></div>
 				</div>
 			</div>
 			<div class="form-group">
-				<div for="rt_seq" class="col-sm-2"><h2><strong>Viral load</strong><br> at t<sub>0</sub></div>
+				<div for="rt_seq" class="col-sm-2"><h2><strong>Viral load</strong><br> at t<sub>0</sub></h2></div>
 				<div class="col-sm-10">
 					<textarea name="viral_load" class="form-control" id="viral_load" placeholder="Viral load"></textarea>
 				</div>
 			</div>
-            <div class="form-group">
-                <div for="rt_seq" class="col-sm-2"><h2><strong>CD4 count</strong><br> at t<sub>0</sub></div>
-                <div class="col-sm-10">
-                    <textarea name="cd4_count" class="form-control" id="cd4_count" placeholder="CD4 count"></textarea>
-                </div>
-            </div>
+			<div class="form-group">
+				<div for="rt_seq" class="col-sm-2"><h2><strong>CD4 count</strong><br> at t<sub>0</sub></h2></div>
+				<div class="col-sm-10">
+					<textarea name="cd4_count" class="form-control" id="cd4_count" placeholder="CD4 count"></textarea>
+				</div>
+			</div>
+            
 			<div class="form-group">
 				<div class="col-sm-offset-2 col-sm-10">
 					<button type="submit" class="js-predict btn btn-primary"><h2>Compute Prediction</h2></button>
@@ -51,32 +86,50 @@
 					<h2 class="js-undetermined label hide label-warning">Undetermined</h2>
 				</div>
 			</div>
+
+            <div class="form-group">
+                <div for="rt_seq" class="col-sm-2"><h2>Responde status</h2></div>
+                <div class="col-sm-10"><h2>YES</h2></div>
+            </div>
+
+            <div class="form-group">
+                <div for="rt_seq" class="col-sm-2"><h2>Viral load in next year</h2></div>
+                <div class="col-sm-10">
+                    <div id="chart_div"></div>
+                </div>
+                <div class="clear"></div>
+            </div>
 		</form>
+        <div class="clear"></div>
 	</div>
-	<div class="container">
-		<h2 class="text-muted">Test data</h2>
-		<table class="table table-hover">
-		  <thead>
-			<tr>
-			  <th>#</th>
-			  <th>pr_seq</th>
-			  <th>rt_seq</th>
-			</tr>
-		  </thead>
-		  <tbody>
-			{% for patient in patients %}
-				<tr class="js-test-patient" onclick="populateData(this)">
-				  <td>{{loop.index}}</td>
-				  <td class="pr_seq">{{patient.pr_seq}}</td>
-				  <td class="rt_seq">{{patient.rt_seq}}</td>
-				</tr>
-			{% endfor %}
-		  </tbody>
-		</table>
+	<div class="cw-container">
+		<h2>Import data</h2>
+		<div class="title-data">
+			<strong>
+				<div div class="col-md-1">ID</div>
+				<div class="col-md-3 pr_seq">Protease</div>
+				<div class="col-md-4 rt_seq">Reverse Transcriptase</div>
+				<div class="col-md-2 rt_seq">Viral load</div>
+				<div class="col-md-2 rt_seq">CD4 count</div>
+			</strong>
+		</div>
+        
+		{% for patient in patients %}
+
+			<div class="import-data js-test-patient safe-data" onclick="populateData(this)">
+				<div div class="col-md-1">#{{loop.index}}</div>
+				<div class="col-md-3 pr_seq">{{patient.pr_seq}}</div>
+				<div class="col-md-4 rt_seq">{{patient.rt_seq}}</div>
+				<div class="col-md-2 viral_load">{{patient.vl_t0}}</div>
+				<div class="col-md-2 cd4_count">{{patient.cd4_t0}}</div>
+				<div class="clear"></div>
+			</div>
+		{% endfor %}
+		<div class="clear"></div>
 	</div>
 {% endblock %}
 {% block js %}
 	{{ super() }}
 	<script src="{{ static('/js/home.js') }}"></script>
-    <script src="{{ static('/js/jquery.autosize.js') }}"></script>
+	<script src="{{ static('/js/jquery.autosize.js') }}"></script>
 {% endblock %}

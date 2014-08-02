@@ -9,6 +9,7 @@ $(function () {
         var nucle = $(this);
         $(this).addClass('hide');
         $(this).prev().removeClass('hide').trigger('autosize.resize');;
+        $(this).prev().focus();
     });
 
     $('.nu-text').focusout(function () {
@@ -16,7 +17,32 @@ $(function () {
         $(this).next().removeClass('hide');
         $(this).addClass('hide');
     });
+    //google.load('visualization', '1.0', {'packages':['corechart']});
+    //google.setOnLoadCallback(drawChart);
 });
+
+
+function drawChart() {
+  var data = google.visualization.arrayToDataTable([
+    ['Generation', 'Descendants'],
+    [0, 1], [1, 33], [2, 269], [3, 2013]
+ ]);
+
+  var options = {
+    title: 'Descendants by Generation',
+    hAxis: {title: 'Generation', minValue: 0, maxValue: 3},
+    vAxis: {title: 'Descendants', minValue: 0, maxValue: 2100},
+    trendlines: {
+      0: {
+        type: 'exponential',
+        visibleInLegend: true,
+      }
+    }
+  };
+
+  var chart = new google.visualization.ScatterChart(document.getElementById('chart_div'));
+  chart.draw(data, options);
+}
 
 function populateData(ele) {
     console.log(ele);
